@@ -1,4 +1,4 @@
-interface AntarcticaObservation {
+export interface AntarcticaObservation {
   nombre: string;
   fhora: string;
   temp: number;

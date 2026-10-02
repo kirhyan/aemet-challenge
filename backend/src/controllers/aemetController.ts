@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
-import { getAntarticaData as getAntarticaDataService } from "../services/aemetService";
+import {
+  Aggregation,
+  GetAntarticaDataOptions,
+  Measurement,
+  getAntarticaData as getAntarticaDataService,
+} from "../services/aemetService";
 
 const validStations = ["89064", "89070"];
+const validAggregations = ["None", "Hourly", "Daily", "Monthly"];
+const validMeasurements = ["temp", "pres", "vel"];
 
 const aemetDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}UTC$/;
 
@@ -20,6 +27,17 @@ export async function getAntarticaData(
   res: Response,
 ) {
   const { fechaIni, fechaFin, identificacion } = req.params;
+  const { aggregation, measurements } = req.query;
+
+  const parsedMeasurements =
+    typeof measurements === "string"
+      ? (measurements.split(",") as Measurement[])
+      : undefined;
+
+  const parsedAggregation =
+    typeof aggregation === "string" && validAggregations.includes(aggregation)
+      ? (aggregation as Aggregation)
+      : undefined;
 
   if (!fechaIni || !fechaFin || !identificacion) {
     return res.status(400).json({
@@ -44,6 +62,26 @@ export async function getAntarticaData(
     });
   }
 
+  if (
+    typeof aggregation === "string" &&
+    !validAggregations.includes(aggregation)
+  ) {
+    return res.status(400).json({
+      error: "Invalid aggregation",
+    });
+  }
+
+  if (
+    parsedMeasurements &&
+    !parsedMeasurements.every((measurement) =>
+      validMeasurements.includes(measurement),
+    )
+  ) {
+    return res.status(400).json({
+      error: "Invalid measurement",
+    });
+  }
+
   const startDate = new Date(fechaIni.replace("UTC", "Z"));
   const endDate = new Date(fechaFin.replace("UTC", "Z"));
   if (startDate > endDate) {
@@ -53,7 +91,21 @@ export async function getAntarticaData(
   }
 
   try {
-    const data = getAntarticaDataService(fechaIni, fechaFin, identificacion);
+    const options: GetAntarticaDataOptions = {
+      fechaIni,
+      fechaFin,
+      identificacion,
+    };
+
+    if (parsedAggregation) {
+      options.aggregation = parsedAggregation;
+    }
+
+    if (parsedMeasurements) {
+      options.measurements = parsedMeasurements;
+    }
+
+    const data = await getAntarticaDataService(options);
     res.json(data);
   } catch (error) {
     console.log(error);
