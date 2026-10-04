@@ -1,4 +1,10 @@
 import { AntarcticaObservation, AemetClient } from "../clients/aemetClient";
+import {
+  getObservations,
+  hasCompleteRange,
+  saveObservations,
+} from "../repositories/weatherRepository";
+
 const aemetClient = new AemetClient();
 
 export type Aggregation = "None" | "Hourly" | "Daily" | "Monthly";
@@ -52,11 +58,22 @@ export async function getAntarticaData(options: GetAntarticaDataOptions) {
   const fechaFin = options.fechaFin;
   const identificacion = options.identificacion;
 
-  const data = await aemetClient.getAntarticaData(
-    fechaIni,
-    fechaFin,
-    identificacion,
-  );
+  const startDate = fechaIni.replace("UTC", "Z");
+  const endDate = fechaFin.replace("UTC", "Z");
+
+  let data: AntarcticaObservation[];
+
+  if (hasCompleteRange(identificacion, startDate, endDate)) {
+    data = getObservations(identificacion, startDate, endDate);
+  } else {
+    data = await aemetClient.getAntarticaData(
+      fechaIni,
+      fechaFin,
+      identificacion,
+    );
+
+    saveObservations(identificacion, data);
+  }
 
   let processedData: AntarcticaObservation[] | AggregatedObservation[] = data;
 
