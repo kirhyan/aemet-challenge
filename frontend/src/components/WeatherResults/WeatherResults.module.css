@@ -1,0 +1,287 @@
+.results {
+  margin-top: 24px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.summaryCard {
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.summaryLabel {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.summaryValue {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.chart {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.chart svg {
+  display: block;
+  width: auto;
+  height: 300px;
+  max-width: none;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.chartScroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+}
+
+.dataPoint:hover {
+  r: 6;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chartHeader h3 {
+  margin: 0;
+}
+
+.chartRange {
+  color: #64748b;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.pointGroup {
+  cursor: pointer;
+}
+
+.dataPoint {
+  transition: r 0.15s ease;
+}
+
+.temperatureLabel {
+  fill: #0f172a;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .chartHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .chartRange {
+    text-align: left;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.paginationPage,
+.paginationArrow {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #64748b;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.paginationPage:hover,
+.paginationArrow:hover:not(:disabled) {
+  color: #0f172a;
+}
+
+.activePage {
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.paginationArrow {
+  font-size: 1rem;
+}
+
+.paginationArrow:disabled {
+  color: #cbd5e1;
+  cursor: default;
+}
+.paginationEllipsis {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.legendDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.temperatureDot {
+  background: #f97316;
+}
+
+.pressureDot {
+  background: #3b82f6;
+}
+
+.windDot {
+  background: #22c55e;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.legendDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.temperatureDot {
+  background: #f97316;
+}
+
+.pressureDot {
+  background: #3b82f6;
+}
+
+.windDot {
+  background: #22c55e;
+}
+
+.chartGrid {
+  stroke: #e2e8f0;
+  stroke-width: 1;
+}
+
+.chartAxis {
+  stroke: #94a3b8;
+  stroke-width: 1.5;
+}
+
+.axisLabel {
+  fill: #64748b;
+  font-size: 11px;
+}
+
+.axisTitle {
+  fill: #475569;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tooltipBackground {
+  fill: white;
+  stroke: #cbd5e1;
+  stroke-width: 1;
+}
+
+.tooltipDate {
+  fill: #334155;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.tooltipTemperature {
+  fill: #f97316;
+  font-size: 10px;
+}
+
+.tooltipPressure {
+  fill: #3b82f6;
+  font-size: 10px;
+}
+
+.tooltipWind {
+  fill: #22c55e;
+  font-size: 10px;
+}
