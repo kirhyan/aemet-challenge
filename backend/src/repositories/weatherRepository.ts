@@ -68,9 +68,9 @@ export function getObservations(
     return {
       nombre: observation.name,
       fhora: observation.timestamp,
-      temp: observation.temperature ?? 0,
-      pres: observation.pressure ?? 0,
-      vel: observation.wind_speed ?? 0,
+      temp: observation.temperature,
+      pres: observation.pressure,
+      vel: observation.wind_speed,
     };
   });
 }
@@ -85,7 +85,8 @@ export function hasCompleteRange(
       `
       SELECT
         MIN(timestamp) AS minTimestamp,
-        MAX(timestamp) AS maxTimestamp
+        MAX(timestamp) AS maxTimestamp,
+        COUNT(*) AS count
       FROM observations
       WHERE station_id = ?
         AND timestamp >= ?
@@ -95,11 +96,25 @@ export function hasCompleteRange(
     .get(stationId, startDate, endDate) as {
     minTimestamp: string | null;
     maxTimestamp: string | null;
+    count: number;
   };
 
   if (!row.minTimestamp || !row.maxTimestamp) {
     return false;
   }
 
-  return row.minTimestamp <= startDate && row.maxTimestamp >= endDate;
+  if (row.minTimestamp > startDate || row.maxTimestamp < endDate) {
+    return false;
+  }
+
+  const firstTimestamp = new Date(row.minTimestamp).getTime();
+
+  const lastTimestamp = new Date(row.maxTimestamp).getTime();
+
+  const tenMinutes = 10 * 60 * 1000;
+
+  const expectedCount =
+    Math.floor((lastTimestamp - firstTimestamp) / tenMinutes) + 1;
+
+  return row.count === expectedCount;
 }

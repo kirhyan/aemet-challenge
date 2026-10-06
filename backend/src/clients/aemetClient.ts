@@ -1,9 +1,9 @@
 export interface AntarcticaObservation {
   nombre: string;
   fhora: string;
-  temp: number;
-  pres: number;
-  vel: number;
+  temp: number | null;
+  pres: number | null;
+  vel: number | null;
 }
 
 const AEMET_BASE_URL = "https://opendata.aemet.es/opendata/api";
